@@ -26,6 +26,7 @@ class Game extends Phaser.Scene {
     this.player.anims.play('hero-running');
     this.player.body.setCollideWorldBounds(true);
     this.player.body.setSize(12, 40);
+    this.player.body.setOffset(12, 23);
   }
 
   update(time, delta) {}
