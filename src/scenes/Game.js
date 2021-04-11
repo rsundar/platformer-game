@@ -23,6 +23,11 @@ class Game extends Phaser.Scene {
       repeat: -1,
     });
     
+    this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.space.on('up', () => {
+      console.log('space key pressed');
+    });
+    
     this.hero = new Hero(this, 250, 160);
   }
 
