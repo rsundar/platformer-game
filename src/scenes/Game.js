@@ -23,6 +23,8 @@ class Game extends Phaser.Scene {
       repeat: -1,
     });
     
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+
     this.input.keyboard.on('keydown-SPACE', () => {
       console.log("space is pressed");
     });
@@ -34,7 +36,11 @@ class Game extends Phaser.Scene {
     this.hero = new Hero(this, 250, 160);
   }
 
-  update(time, delta) {}
+  update(time, delta) {
+    if(this.cursorKeys.space.isDown) {
+      console.log("Space is held down");
+    }
+  }
 }
 
 export default Game;
