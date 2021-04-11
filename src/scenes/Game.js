@@ -22,8 +22,9 @@ class Game extends Phaser.Scene {
       repeat: -1,
     });
     
-    this.player = this.add.sprite(400, 300, 'hero-run-sheet');
+    this.player = this.physics.add.sprite(400, 300, 'hero-run-sheet');
     this.player.anims.play('hero-running');
+    this.player.body.setCollideWorldBounds(true);
   }
 
   update(time, delta) {}
