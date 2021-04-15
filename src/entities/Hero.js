@@ -33,19 +33,28 @@ class Hero extends Phaser.GameObjects.Sprite {
       this.body.setAccelerationX(0);
     }
 
+    if (this.body.onFloor()) {
+      this.canDoubleJump = false;
+    }
+
+    if (this.body.velocity.y > 0) {
+      this.isJumping = false;
+    }
     const didPressJump = Phaser.Input.Keyboard.JustDown(this.keys.up);
     
     if (didPressJump) {
       if(this.body.onFloor()){
         this.body.setVelocityY(-440);
         this.canDoubleJump = true;
+        this.isJumping = true;
       } else if (this.canDoubleJump) {
         this.canDoubleJump = false;
+        this.isJumping = true;
         this.body.setVelocityY(-310);
       }
     }
 
-    if(!this.keys.up.isDown && this.body.velocity.y < -150) {
+    if(!this.keys.up.isDown && this.body.velocity.y < -150 && this.isJumping) {
       this.body.setVelocityY(-150);
     }
   }
