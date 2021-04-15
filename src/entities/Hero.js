@@ -13,6 +13,8 @@ class Hero extends Phaser.GameObjects.Sprite {
     this.body.setSize(12, 40);
     this.body.setOffset(12, 23);
 
+    this.body.setMaxVelocity(110, 440);
+    this.body.setDragX(750);
     this.keys = scene.cursorKeys;
   }
 
@@ -20,15 +22,15 @@ class Hero extends Phaser.GameObjects.Sprite {
     super.preUpdate(time, delta);
 
     if (this.keys.left.isDown) {
-      this.body.setVelocityX(-110);
+      this.body.setAccelerationX(-440);
       this.setFlipX(true);
       this.body.offset.x = 8;
     } else if (this.keys.right.isDown) {
-      this.body.setVelocityX(110);
+      this.body.setAccelerationX(440);
       this.setFlipX(false);
       this.body.offset.x = 12;
     } else {
-      this.body.setVelocityX(0);
+      this.body.setAccelerationX(0);
     }
   
   }
