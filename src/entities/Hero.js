@@ -32,7 +32,12 @@ class Hero extends Phaser.GameObjects.Sprite {
     } else {
       this.body.setAccelerationX(0);
     }
-  
+
+    const didPressJump = Phaser.Input.Keyboard.JustDown(this.keys.up);
+    
+    if (didPressJump && this.body.onFloor()) {
+      this.body.setVelocityY(-440);
+    }
   }
 }
 
