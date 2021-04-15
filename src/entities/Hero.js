@@ -38,6 +38,10 @@ class Hero extends Phaser.GameObjects.Sprite {
     if (didPressJump && this.body.onFloor()) {
       this.body.setVelocityY(-440);
     }
+
+    if(!this.keys.up.isDown && this.body.velocity.y < -150) {
+      this.body.setVelocityY(-150);
+    }
   }
 }
 
