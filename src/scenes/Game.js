@@ -24,22 +24,11 @@ class Game extends Phaser.Scene {
     });
     
     this.cursorKeys = this.input.keyboard.createCursorKeys();
-
-    this.input.keyboard.on('keydown-SPACE', () => {
-      console.log("space is pressed");
-    });
-
-    this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.space.on('up', () => {
-      console.log('space key released');
-    });
     this.hero = new Hero(this, 250, 160);
   }
 
   update(time, delta) {
-    if(this.cursorKeys.space.isDown) {
-      console.log("Space is held down");
-    }
+    
   }
 }
 
