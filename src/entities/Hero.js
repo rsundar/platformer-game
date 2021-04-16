@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import StateMachine from 'javascript-state-machine';
 
 class Hero extends Phaser.GameObjects.Sprite {
 
@@ -16,8 +17,36 @@ class Hero extends Phaser.GameObjects.Sprite {
     this.body.setMaxVelocity(110, 440);
     this.body.setDragX(750);
     this.keys = scene.cursorKeys;
+
+    this.setupMovement();
   }
 
+  setupMovement() {
+    this.moveState = new StateMachine({
+      init: 'standing',
+      transitions: [
+       { name: 'jump', from: 'standing', to: 'jumping' },
+       { name: 'flip', from: 'jumping', to: 'flipping' },
+       { name: 'fall', from: 'standing', to: 'falling' },
+       { name: 'touchdown', from: '*', to: 'standing' },
+      ],
+      methods: {
+        onJump: () => {
+          this.body.setVelocityY(-440);
+        },
+        onFlip: () => {
+          this.body.setVelocityY(-300);
+        }
+      },
+    });
+
+    this.movePredicates = {
+      jump: () => {},
+      fall: () => {},
+      flip: () => {},
+      touchdown: () => {},
+    };
+  }
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
 
@@ -56,6 +85,13 @@ class Hero extends Phaser.GameObjects.Sprite {
 
     if(!this.keys.up.isDown && this.body.velocity.y < -150 && this.isJumping) {
       this.body.setVelocityY(-150);
+    }
+
+    for(const t of this.moveState.transitions()) {
+      if(t in this.movePredicates && this.movePredicates[t]()) {
+        this.moveState[t]();
+        break;
+      }
     }
   }
 }
