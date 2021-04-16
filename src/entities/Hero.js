@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import StateMachine from 'javascript-state-machine';
 
 class Hero extends Phaser.GameObjects.Sprite {
-
   constructor(scene, x, y) {
     super(scene, x, y, 'hero-run-sheet', 0);
 
@@ -37,30 +36,19 @@ class Hero extends Phaser.GameObjects.Sprite {
       ],
       methods: {
         onEnterState: (lifecycle) => {
+          // eslint-disable-next-line prefer-template
           this.anims.play('hero-' + lifecycle.to);
         },
       },
     });
 
     this.animPredicates = {
-      idle: () => {
-        return this.body.onFloor() && this.body.velocity.x === 0;
-      },
-      run: () => {
-        return this.body.onFloor() && Math.sign(this.body.velocity.x) === (this.flipX? -1 : 1);
-      },
-      pivot: () => {
-        return this.body.onFloor() && Math.sign(this.body.velocity.x) === (this.flipX? 1 : -1);
-      },
-      jump: () => {
-        return this.body.velocity.y < 0;
-      },
-      flip: () => {
-        return this.body.velocity.y < 0 && this.moveState.is('flipping');
-      },
-      fall: () => {
-        return this.body.velocity.y > 0;
-      }
+      idle: () => this.body.onFloor() && this.body.velocity.x === 0,
+      run: () => this.body.onFloor() && Math.sign(this.body.velocity.x) === (this.flipX ? -1 : 1),
+      pivot: () => this.body.onFloor() && Math.sign(this.body.velocity.x) === (this.flipX ? 1 : -1),
+      jump: () => this.body.velocity.y < 0,
+      flip: () => this.body.velocity.y < 0 && this.moveState.is('flipping'),
+      fall: () => this.body.velocity.y > 0,
     };
   }
 
@@ -68,10 +56,10 @@ class Hero extends Phaser.GameObjects.Sprite {
     this.moveState = new StateMachine({
       init: 'standing',
       transitions: [
-       { name: 'jump', from: 'standing', to: 'jumping' },
-       { name: 'flip', from: 'jumping', to: 'flipping' },
-       { name: 'fall', from: 'standing', to: 'falling' },
-       { name: 'touchdown', from: ['jumping', 'flipping', 'falling'], to: 'standing' },
+        { name: 'jump', from: 'standing', to: 'jumping' },
+        { name: 'flip', from: 'jumping', to: 'flipping' },
+        { name: 'fall', from: 'standing', to: 'falling' },
+        { name: 'touchdown', from: ['jumping', 'flipping', 'falling'], to: 'standing' },
       ],
       methods: {
         onJump: () => {
@@ -79,25 +67,18 @@ class Hero extends Phaser.GameObjects.Sprite {
         },
         onFlip: () => {
           this.body.setVelocityY(-330);
-        }
+        },
       },
     });
 
     this.movePredicates = {
-      jump: () => {
-        return this.input.didPressJump;
-      },
-      fall: () => {
-        return !this.body.onFloor();
-      },
-      flip: () => {
-        return this.input.didPressJump;
-      },
-      touchdown: () => {
-        return this.body.onFloor();
-      },
+      jump: () => this.input.didPressJump,
+      fall: () => !this.body.onFloor(),
+      flip: () => this.input.didPressJump,
+      touchdown: () => this.body.onFloor(),
     };
   }
+
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
 
@@ -116,20 +97,22 @@ class Hero extends Phaser.GameObjects.Sprite {
     }
 
     if (this.moveState.is('jumping') || this.moveState.is('flipping')) {
-      if(!this.keys.up.isDown && this.body.velocity.y < -150) {
+      if (!this.keys.up.isDown && this.body.velocity.y < -150) {
         this.body.setVelocityY(-150);
       }
     }
 
-    for(const t of this.moveState.transitions()) {
-      if(t in this.movePredicates && this.movePredicates[t]()) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const t of this.moveState.transitions()) {
+      if (t in this.movePredicates && this.movePredicates[t]()) {
         this.moveState[t]();
         break;
       }
     }
 
-    for(const t of this.animState.transitions()) {
-      if(t in this.animPredicates && this.animPredicates[t]()) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const t of this.animState.transitions()) {
+      if (t in this.animPredicates && this.animPredicates[t]()) {
         this.animState[t]();
         break;
       }
