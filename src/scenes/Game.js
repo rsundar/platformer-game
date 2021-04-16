@@ -54,7 +54,7 @@ class Game extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: 'hero-pivotting',
+      key: 'hero-pivoting',
       frames: this.anims.generateFrameNumbers('hero-pivot-sheet'),
     });
 
