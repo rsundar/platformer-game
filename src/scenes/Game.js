@@ -94,6 +94,8 @@ class Game extends Phaser.Scene {
     this.map = this.make.tilemap({ key: 'level-1' });
     const groundTiles = this.map.addTilesetImage('world-1', 'world-1-sheet');
     this.map.createStaticLayer('Ground', groundTiles);
+    this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    this.physics.world.setBoundsCollision(true, true, false, true);
   }
 
   update(time, delta) {
