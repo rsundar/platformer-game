@@ -13,7 +13,7 @@ class Game extends Phaser.Scene {
   preload() {
     this.load.tilemapTiledJSON('level-1', 'assets/tilemaps/level-1.json');
 
-    this.load.image('world-1', 'assets/tileset/world-1.png');
+    this.load.image('world-1-sheet', 'assets/tileset/world-1.png');
 
     this.load.spritesheet('hero-idle-sheet', 'assets/hero/idle.png', {
       frameWidth: 32,
@@ -86,11 +86,14 @@ class Game extends Phaser.Scene {
     });
 
     this.addMap();
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.hero = new Hero(this, 250, 160);
   }
 
   addMap() {
     this.map = this.make.tilemap({ key: 'level-1' });
+    const groundTiles = this.map.addTilesetImage('world-1', 'world-1-sheet');
+    this.map.createStaticLayer('Ground', groundTiles);
   }
 
   update(time, delta) {
