@@ -88,6 +88,8 @@ class Game extends Phaser.Scene {
     this.addMap();
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.hero = new Hero(this, 250, 160);
+    this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    this.cameras.main.startFollow(this.hero);
   }
 
   addMap() {
