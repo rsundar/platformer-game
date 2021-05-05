@@ -1,5 +1,8 @@
 # My Mario Clone
 
+## Live demo
+Click the [link](https://agitated-wright-26f2c5.netlify.app/) to check out the current state of the game.
+
 ## Setup
 
 ### Environment
