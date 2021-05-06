@@ -94,6 +94,7 @@ class Game extends Phaser.Scene {
 
   addHero() {
     this.hero = new Hero(this, 250, 160);
+    this.children.moveTo(this.hero, this.children.getIndex(this.map.getLayer('Foreground').tilemapLayer));
     this.physics.add.collider(this.hero, this.map.getLayer('Ground').tilemapLayer);
   }
 
@@ -102,6 +103,7 @@ class Game extends Phaser.Scene {
     const groundTiles = this.map.addTilesetImage('world-1', 'world-1-sheet');
     const groundLayer = this.map.createStaticLayer('Ground', groundTiles);
     groundLayer.setCollision([1, 2, 4], true);
+    this.map.createStaticLayer('Foreground', groundTiles);
     this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     this.physics.world.setBoundsCollision(true, true, false, true);
   }
