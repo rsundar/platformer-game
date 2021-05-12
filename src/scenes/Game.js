@@ -110,10 +110,13 @@ class Game extends Phaser.Scene {
   addHero() {
     this.hero = new Hero(this, this.spawnPosition.x, this.spawnPosition.y);
     this.children.moveTo(this.hero, this.children.getIndex(this.map.getLayer('Foreground').tilemapLayer));
-    this.physics.add.collider(this.hero, this.map.getLayer('Ground').tilemapLayer);
-    setTimeout(() => {
+    this.groundCollider = this.physics.add.collider(this.hero, this.map.getLayer('Ground').tilemapLayer);
+    this.spikeCollider = this.physics.add.overlap(this.hero, this.spikeGroup, () => {
       this.hero.kill();
-    }, 3000);
+      this.groundCollider.destroy();
+      this.spikeCollider.destroy();
+      this.hero.body.setCollideWorldBounds(false);
+    });
   }
 
   addMap() {
