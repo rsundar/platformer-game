@@ -165,6 +165,8 @@ class Game extends Phaser.Scene {
     if (this.hero.isDead() && this.hero.getBounds().top > cameraBottom + 100) {
       this.hero.destroy();
       this.addHero();
+      this.score = 0;
+      this.scene.restart();
     }
   }
 }
