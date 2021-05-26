@@ -6,6 +6,8 @@ import Hero from '../entities/Hero';
 class Game extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' });
+
+    this.score = 0;
   }
 
   init(data) {}
@@ -20,6 +22,7 @@ class Game extends Phaser.Scene {
       spacing: 2,
     });
     this.load.image('clouds-sheet', 'assets/tileset/clouds.png');
+    this.load.image('star', 'assets/tiles/star.png');
     this.load.spritesheet('hero-idle-sheet', 'assets/hero/idle.png', {
       frameWidth: 32,
       frameHeight: 64,
@@ -99,7 +102,6 @@ class Game extends Phaser.Scene {
       key: 'hero-dead',
       frames: this.anims.generateFrameNumbers('hero-die-sheet'),
     });
-
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.addMap();
     this.addHero();
@@ -118,6 +120,14 @@ class Game extends Phaser.Scene {
       this.hero.body.setCollideWorldBounds(false);
       this.cameras.main.stopFollow();
     });
+    // eslint-disable-next-line max-len
+    this.starCollider = this.physics.add.overlap(this.hero, this.starsGroup, this.collectStar, null, this);
+  }
+
+  collectStar(player, star) {
+    star.disableBody(true, true);
+    this.score += 10;
+    console.log('Score: ', this.score);
   }
 
   addMap() {
@@ -131,9 +141,13 @@ class Game extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     this.physics.world.setBoundsCollision(true, true, false, true);
     this.spikeGroup = this.physics.add.group({ immovable: true, allowGravity: false });
+    this.starsGroup = this.physics.add.group({ allowGravity: false });
     this.map.getObjectLayer('Objects').objects.forEach(object => {
       if (object.name === 'Start') {
         this.spawnPosition = { x: object.x, y: object.y };
+      }
+      if (object.name === 'stars') {
+        const star = this.starsGroup.create(object.x, object.y, 'star');
       }
       if (object.gid === 7) {
         const spike = this.spikeGroup.create(object.x, object.y, 'world-1-sheet', object.gid - 1);
