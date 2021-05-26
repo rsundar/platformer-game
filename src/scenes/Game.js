@@ -103,6 +103,7 @@ class Game extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers('hero-die-sheet'),
     });
     this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
     this.addMap();
     this.addHero();
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -127,7 +128,7 @@ class Game extends Phaser.Scene {
   collectStar(player, star) {
     star.disableBody(true, true);
     this.score += 10;
-    console.log('Score: ', this.score);
+    this.scoreText.setText(`Score: ${this.score}`);
   }
 
   addMap() {
